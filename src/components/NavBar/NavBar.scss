@@ -1,0 +1,30 @@
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    margin: 1%;
+    img {
+        width: 2rem;
+        height: 2rem;
+    }
+    ul {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        list-style-type: none;
+        li {
+            margin: auto;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: 0.05s;
+            &:hover {
+                background: rgba(0, 0, 0, 0.082);
+            }
+            a {
+                text-decoration: none;
+                color: black;
+                font-size: 1.1rem;
+            }
+        }
+    }
+}
