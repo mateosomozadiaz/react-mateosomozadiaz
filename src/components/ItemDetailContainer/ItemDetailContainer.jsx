@@ -18,7 +18,8 @@ function ItemDetailContainer() {
 
     return(
         <>
-            {Object.keys(data).length === 0 ? (
+            {Object.keys(data).length === 0 ? (<img className="loading" src="../loading.gif" alt="Cargando..." />
+            ) : (
                 <div className="item-detail-container">
 
                     <img src={data.img} alt={data.nombre} />
@@ -45,8 +46,6 @@ function ItemDetailContainer() {
                     </div>
 
                 </div>
-            ) : (
-                <img className="loading" src="../loading.gif" alt="Cargando..." />
             )}
         </>
     );
