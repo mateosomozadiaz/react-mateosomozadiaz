@@ -1,0 +1,14 @@
+.formulario-compra {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    gap: 1rem;
+    margin: auto;
+    input, button {
+        font-size: 0.9rem;
+    }
+}
+
+.compra-realizada {
+    text-align: center;
+}

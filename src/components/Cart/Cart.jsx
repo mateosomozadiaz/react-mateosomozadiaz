@@ -1,14 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./Cart.scss";
 import { CartContext } from "../../cartContext";
+import { Link } from "react-router-dom";
 
 function Cart() {
 	const { cart, cartFunctions } = useContext(CartContext);
-	const [totalPrice, setTotalPrice] = useState(0);
-
-	useEffect(() => {
-		setTotalPrice()
-	}, [cart]);
 
 	return (
 		<div className="cart">
@@ -23,6 +19,7 @@ function Cart() {
 						</div>
 					))}
 					<p>{"Precio Total: $" + cartFunctions.price()}</p>
+					<Link to="/checkout"><button>Finalizar Compra</button></Link>
 				</>
 			) : (
 				<h3>El carrito está vacío</h3>

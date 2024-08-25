@@ -5,6 +5,7 @@ import ItemListContainer from "./components/ItemListContainer/ItemListContainer"
 import ItemDetailContainer from "./components/ItemDetailContainer/ItemDetailContainer";
 import Error from "./components/Error/Error";
 import Cart from "./components/Cart/Cart";
+import Checkout from "./components/Checkout/Checkout";
 
 import { CartContextProvider } from "./cartContext";
 
@@ -19,6 +20,7 @@ function App() {
 						<Route path="/categoria/:categoria" element={<ItemListContainer />} />
 						<Route path="/detalles/:id" element={<ItemDetailContainer />} />
 						<Route path="/carrito" element={<Cart />} />
+						<Route path="/checkout" element={<Checkout />} />
 						<Route path="*" element={<Error />} />
 					</Routes>
 				</BrowserRouter>
