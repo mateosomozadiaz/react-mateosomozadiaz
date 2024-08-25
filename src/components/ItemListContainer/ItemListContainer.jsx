@@ -1,50 +1,61 @@
+import "./ItemListContainer.scss";
 import React, { useState, useEffect } from "react";
-import { getData, getDataByCategory, getDataById } from "../../Data.js";
-import { useParams, Link } from 'react-router-dom'
-import "./ItemListContainer.scss"
+import { useParams, Link } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 
 function ItemListContainer() {
-  const [data, setData] = useState([]);
-  
-  const { categoria } = useParams();
-  
-  useEffect(() => {
+	const [data, setData] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const { categoria } = useParams();
 
-    setData([]);
+	useEffect(() => {
+		const collectionRef = collection(db, "productos");
 
-    if (categoria && categoria !== 'detalles') {
-      getDataByCategory(categoria)
-      .then((response) => setData(response))
-      .catch((error) => console.error(error));
-    } else {
-      getData()
-      .then((response) => setData(response))
-      .catch((error) => console.error(error));
-    }
+		let queryCategoria;
+		if (categoria) {
+			queryCategoria = query(collectionRef, where("categoria", "==", categoria));
+		} else {
+			queryCategoria = query(collectionRef);
+		}
 
-  }, [categoria]);
+		setLoading(true);
 
-  return (
-    <div className={data.length !== 0 ? "item-list-container" : ("")}>
-      {data.length === 0 ? (
-          <img className="loading" src="../loading.gif" alt="Cargando..." />
-      ) : (
-        data.map((item) => {
-          return (
-            <div className="item" key={item.id}>
-              <img src={item.img} alt={"Imagen de " + item.nombre} />
+		getDocs(queryCategoria)
+			.then((snapshot) => {
+				const items = snapshot.docs.map((doc) => ({
+					id: doc.id,
+					...doc.data(),
+				}));
+				setData(items);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.error(error);
+				setLoading(false);
+			});
+	}, [categoria]);
 
-              <p>{item.nombre}</p>
-
-              <p className="price" >{"$" + item.precio}</p>
-
-              <Link className="button-link" to={"/detalles/" + item.id}><button>Ver Detalles</button></Link>
-            </div>
-          );
-        })
-      )}
-    </div>
-  );
+	return (
+		<div className={loading ? "" : "item-list-container"}>
+			{loading ? (
+				<img className="loading" src="../loading.gif" alt="Cargando..." />
+			) : data.length === 0 ? (
+				<p>No hay productos disponibles.</p>
+			) : (
+				data.map((item) => (
+					<div className="item" key={item.id}>
+						<img src={item.img} alt={"Imagen de " + item.nombre} />
+						<p>{item.nombre}</p>
+						<p className="price">{"$" + item.precio}</p>
+						<Link className="button-link" to={"/detalles/" + item.id}>
+							<button>Ver Detalles</button>
+						</Link>
+					</div>
+				))
+			)}
+		</div>
+	);
 }
 
 export default ItemListContainer;
